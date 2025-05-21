@@ -21,6 +21,7 @@
     "mongoose": "^7.3.1",
     "mongoose-unique-validator": "^4.0.0",
     "nodemon": "^2.0.22",
+    "sequelize": "^6.37.7",
     "validator": "^13.11.0"
   }
 }

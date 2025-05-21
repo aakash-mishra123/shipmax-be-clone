@@ -1,42 +1,53 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+const { DataTypes, Model } = require('sequelize');
+const { sequelize } = require('../connection.mjs');
 
-const userSchema = new Schema({
+class User extends Model {}
+
+User.init({
+    id: {
+        type: DataTypes.BIGINT.UNSIGNED,
+        autoIncrement: true,
+        primaryKey: true,
+    },
     email: {
-        type: String,
-        required: true,
+        type: DataTypes.STRING,
+        allowNull: false,
         unique: true
     },
     password: {
-        type: String,
-        required: true
+        type: DataTypes.STRING,
+        allowNull: false
     },
     name: {
-        type: String,
-        required: true 
+        type: DataTypes.STRING,
+        allowNull: false
     },
     avatar: {
-        type: String,
-        default: 'I am new here!'
+        type: DataTypes.STRING,
+        defaultValue: 'I am new here!'
     },
     user_type: {
-        type: String,
-        enum: ['C', 'A', 'V'], // Customer, Admin, Vendor
-        default: 'C'
+        type: DataTypes.ENUM('C', 'A', 'V'),
+        defaultValue: 'C'
     },
     status: {
-        type: String,
-        enum: ['A', 'D'], // Active, Disabled
-        default: 'A'
+        type: DataTypes.ENUM('A', 'D'),
+        defaultValue: 'A'
     },
     company_id: {
-        type: Schema.Types.ObjectId,
-        ref: 'Company'
+        type: DataTypes.BIGINT.UNSIGNED,
+        allowNull: true
     },
-    last_login: Number,
+    last_login: DataTypes.DATE,
     created_at: {
-        type: Number,
-        default: Math.floor(Date.now() / 1000)
-    },
-    orders: [{
-        type: Schema.Types.ObjectId,
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW
+    }
+}, {
+    sequelize,
+    modelName: 'User',
+    tableName: 'users',
+    timestamps: false
+});
+
+module.exports = User;
